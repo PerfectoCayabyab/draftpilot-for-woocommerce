@@ -2,17 +2,17 @@
 /**
  * Plugin settings stored in a single option.
  *
- * @package CopyPilot
+ * @package DraftPilot
  */
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Typed access to the copypilot_settings option.
+ * Typed access to the draftpilot_settings option.
  */
-class CopyPilot_Settings {
+class DraftPilot_Settings {
 
-	const OPTION = 'copypilot_settings';
+	const OPTION = 'draftpilot_settings';
 
 	/**
 	 * Tone presets offered in the UI.
@@ -21,11 +21,11 @@ class CopyPilot_Settings {
 	 */
 	public static function tones() {
 		return array(
-			'professional' => __( 'Professional', 'copypilot-for-woocommerce' ),
-			'friendly'     => __( 'Friendly & warm', 'copypilot-for-woocommerce' ),
-			'premium'      => __( 'Premium & luxurious', 'copypilot-for-woocommerce' ),
-			'playful'      => __( 'Playful', 'copypilot-for-woocommerce' ),
-			'minimal'      => __( 'Minimal & direct', 'copypilot-for-woocommerce' ),
+			'professional' => __( 'Professional', 'draftpilot-for-woocommerce' ),
+			'friendly'     => __( 'Friendly & warm', 'draftpilot-for-woocommerce' ),
+			'premium'      => __( 'Premium & luxurious', 'draftpilot-for-woocommerce' ),
+			'playful'      => __( 'Playful', 'draftpilot-for-woocommerce' ),
+			'minimal'      => __( 'Minimal & direct', 'draftpilot-for-woocommerce' ),
 		);
 	}
 

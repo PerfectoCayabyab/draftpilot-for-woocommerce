@@ -2,7 +2,7 @@
 /**
  * Builds prompts from product data and turns Gemini output into drafts.
  *
- * @package CopyPilot
+ * @package DraftPilot
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -10,32 +10,32 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Copy generation for a single product.
  */
-class CopyPilot_Generator {
+class DraftPilot_Generator {
 
 	/**
 	 * Generate the requested fields for a product and store them as pending drafts.
 	 *
 	 * @param int      $product_id Product ID.
-	 * @param string[] $fields     Subset of CopyPilot_Drafts::fields() keys.
+	 * @param string[] $fields     Subset of DraftPilot_Drafts::fields() keys.
 	 * @param string   $tone       Tone preset key.
 	 * @return array|WP_Error Array of created draft rows.
 	 */
 	public static function generate( $product_id, $fields, $tone ) {
 		$product = wc_get_product( $product_id );
 		if ( ! $product ) {
-			return new WP_Error( 'copypilot_no_product', __( 'Product not found.', 'copypilot-for-woocommerce' ) );
+			return new WP_Error( 'draftpilot_no_product', __( 'Product not found.', 'draftpilot-for-woocommerce' ) );
 		}
 
-		$valid_fields = array_keys( CopyPilot_Drafts::fields() );
+		$valid_fields = array_keys( DraftPilot_Drafts::fields() );
 		$fields       = array_values( array_intersect( $fields, $valid_fields ) );
 		if ( empty( $fields ) ) {
-			return new WP_Error( 'copypilot_no_fields', __( 'No valid fields requested.', 'copypilot-for-woocommerce' ) );
+			return new WP_Error( 'draftpilot_no_fields', __( 'No valid fields requested.', 'draftpilot-for-woocommerce' ) );
 		}
 
 		$schema = self::response_schema( $fields );
 		$prompt = self::build_prompt( $product, $fields, $tone );
 
-		$json = CopyPilot_Gemini_Client::generate_json( $prompt, $schema );
+		$json = DraftPilot_Gemini_Client::generate_json( $prompt, $schema );
 		if ( is_wp_error( $json ) ) {
 			return $json;
 		}
@@ -50,18 +50,18 @@ class CopyPilot_Generator {
 				? wp_kses_post( $json[ $field ] )
 				: sanitize_text_field( $json[ $field ] );
 
-			$draft_id = CopyPilot_Drafts::create(
+			$draft_id = DraftPilot_Drafts::create(
 				$product_id,
 				$field,
-				CopyPilot_Drafts::current_value( $product, $field ),
+				DraftPilot_Drafts::current_value( $product, $field ),
 				$proposed,
 				$tone
 			);
-			$drafts[] = CopyPilot_Drafts::get( $draft_id );
+			$drafts[] = DraftPilot_Drafts::get( $draft_id );
 		}
 
 		if ( empty( $drafts ) ) {
-			return new WP_Error( 'copypilot_empty', __( 'The model returned no usable copy. Please try again.', 'copypilot-for-woocommerce' ) );
+			return new WP_Error( 'draftpilot_empty', __( 'The model returned no usable copy. Please try again.', 'draftpilot-for-woocommerce' ) );
 		}
 
 		return $drafts;
@@ -109,7 +109,7 @@ class CopyPilot_Generator {
 	 * @return string
 	 */
 	private static function build_prompt( $product, $fields, $tone ) {
-		$tones     = CopyPilot_Settings::tones();
+		$tones     = DraftPilot_Settings::tones();
 		$tone_name = isset( $tones[ $tone ] ) ? $tones[ $tone ] : 'Professional';
 
 		$categories = wp_strip_all_tags( wc_get_product_category_list( $product->get_id(), ', ' ) );
@@ -148,10 +148,10 @@ class CopyPilot_Generator {
 			$facts[] = 'Existing copy (for factual reference only, do not copy phrasing): ' . wp_strip_all_tags( $existing );
 		}
 
-		$brand_voice = (string) CopyPilot_Settings::get( 'brand_voice' );
-		$language    = (string) CopyPilot_Settings::get( 'language' );
+		$brand_voice = (string) DraftPilot_Settings::get( 'brand_voice' );
+		$language    = (string) DraftPilot_Settings::get( 'language' );
 
-		$field_labels = array_intersect_key( CopyPilot_Drafts::fields(), array_flip( $fields ) );
+		$field_labels = array_intersect_key( DraftPilot_Drafts::fields(), array_flip( $fields ) );
 
 		$prompt  = "You are an expert e-commerce copywriter. Write product copy for the following WooCommerce product.\n\n";
 		$prompt .= implode( "\n", $facts ) . "\n\n";

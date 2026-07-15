@@ -2,15 +2,15 @@
 /**
  * Admin menu + React app bootstrap.
  *
- * @package CopyPilot
+ * @package DraftPilot
  */
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Registers the CopyPilot page under WooCommerce and enqueues the app.
+ * Registers the DraftPilot page under WooCommerce and enqueues the app.
  */
-class CopyPilot_Admin {
+class DraftPilot_Admin {
 
 	/**
 	 * Hook everything.
@@ -21,15 +21,15 @@ class CopyPilot_Admin {
 	}
 
 	/**
-	 * WooCommerce → CopyPilot.
+	 * WooCommerce → DraftPilot.
 	 */
 	public function register_menu() {
 		add_submenu_page(
 			'woocommerce',
-			__( 'CopyPilot', 'copypilot-for-woocommerce' ),
-			__( 'CopyPilot', 'copypilot-for-woocommerce' ),
+			__( 'DraftPilot', 'draftpilot-for-woocommerce' ),
+			__( 'DraftPilot', 'draftpilot-for-woocommerce' ),
 			'manage_woocommerce',
-			'copypilot',
+			'draftpilot',
 			array( $this, 'render_page' )
 		);
 	}
@@ -38,7 +38,7 @@ class CopyPilot_Admin {
 	 * App root element.
 	 */
 	public function render_page() {
-		echo '<div id="copypilot-root"></div>';
+		echo '<div id="draftpilot-root"></div>';
 	}
 
 	/**
@@ -47,19 +47,19 @@ class CopyPilot_Admin {
 	 * @param string $hook Current admin page hook.
 	 */
 	public function enqueue( $hook ) {
-		if ( 'woocommerce_page_copypilot' !== $hook ) {
+		if ( 'woocommerce_page_draftpilot' !== $hook ) {
 			return;
 		}
 
-		$asset_file = COPYPILOT_PLUGIN_DIR . 'build/index.asset.php';
+		$asset_file = DRAFTPILOT_PLUGIN_DIR . 'build/index.asset.php';
 		if ( ! file_exists( $asset_file ) ) {
 			return;
 		}
 		$asset = require $asset_file;
 
 		wp_enqueue_script(
-			'copypilot-admin',
-			COPYPILOT_PLUGIN_URL . 'build/index.js',
+			'draftpilot-admin',
+			DRAFTPILOT_PLUGIN_URL . 'build/index.js',
 			$asset['dependencies'],
 			$asset['version'],
 			true
@@ -67,16 +67,16 @@ class CopyPilot_Admin {
 
 		wp_enqueue_style( 'wp-components' );
 
-		$style = COPYPILOT_PLUGIN_DIR . 'build/style-index.css';
+		$style = DRAFTPILOT_PLUGIN_DIR . 'build/style-index.css';
 		if ( file_exists( $style ) ) {
 			wp_enqueue_style(
-				'copypilot-admin',
-				COPYPILOT_PLUGIN_URL . 'build/style-index.css',
+				'draftpilot-admin',
+				DRAFTPILOT_PLUGIN_URL . 'build/style-index.css',
 				array( 'wp-components' ),
 				$asset['version']
 			);
 		}
 
-		wp_set_script_translations( 'copypilot-admin', 'copypilot-for-woocommerce' );
+		wp_set_script_translations( 'draftpilot-admin', 'draftpilot-for-woocommerce' );
 	}
 }

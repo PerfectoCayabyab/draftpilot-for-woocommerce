@@ -1,10 +1,10 @@
-.copypilot-app {
+.draftpilot-app {
 	max-width: 1100px;
 	margin: 24px auto 48px;
 	padding: 0 12px;
 }
 
-.copypilot-header {
+.draftpilot-header {
 	margin-bottom: 16px;
 
 	h1 {
@@ -23,13 +23,13 @@
 	}
 }
 
-.copypilot-loading {
+.draftpilot-loading {
 	display: flex;
 	justify-content: center;
 	padding: 48px;
 }
 
-.copypilot-toolbar {
+.draftpilot-toolbar {
 	display: flex;
 	flex-direction: column;
 	gap: 12px;
@@ -40,20 +40,20 @@
 	margin: 16px 0;
 }
 
-.copypilot-generate-controls {
+.draftpilot-generate-controls {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: flex-end;
 	gap: 20px;
 }
 
-.copypilot-fields {
+.draftpilot-fields {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 6px 16px;
 }
 
-.copypilot-table {
+.draftpilot-table {
 	.check-column {
 		width: 36px;
 		padding: 8px 0 8px 8px;
@@ -66,7 +66,7 @@
 	}
 }
 
-.copypilot-product-cell {
+.draftpilot-product-cell {
 	display: flex;
 	align-items: center;
 	gap: 10px;
@@ -79,22 +79,22 @@
 	}
 }
 
-.copypilot-pagination {
+.draftpilot-pagination {
 	display: flex;
 	align-items: center;
 	gap: 12px;
 	margin-top: 16px;
 }
 
-.copypilot-review {
+.draftpilot-review {
 	margin-top: 16px;
 }
 
-.copypilot-draft {
+.draftpilot-draft {
 	margin-bottom: 16px;
 }
 
-.copypilot-draft-head {
+.draftpilot-draft-head {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -107,12 +107,12 @@
 	}
 }
 
-.copypilot-draft-actions {
+.draftpilot-draft-actions {
 	display: flex;
 	gap: 8px;
 }
 
-.copypilot-chip {
+.draftpilot-chip {
 	display: inline-block;
 	margin-left: 8px;
 	padding: 2px 10px;
@@ -122,13 +122,13 @@
 	color: #3c434a;
 }
 
-.copypilot-chip-tone {
+.draftpilot-chip-tone {
 	background: #e6f2ef;
 	color: #005c45;
 	text-transform: capitalize;
 }
 
-.copypilot-compare {
+.draftpilot-compare {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	gap: 16px;
@@ -138,7 +138,7 @@
 	}
 }
 
-.copypilot-value {
+.draftpilot-value {
 	border: 1px solid #dcdcde;
 	border-radius: 4px;
 	overflow: hidden;
@@ -148,7 +148,7 @@
 	}
 }
 
-.copypilot-value-label {
+.draftpilot-value-label {
 	display: block;
 	padding: 6px 12px;
 	background: #f6f7f7;
@@ -160,13 +160,13 @@
 	border-bottom: 1px solid #dcdcde;
 }
 
-.copypilot-value:last-child .copypilot-value-label {
+.draftpilot-value:last-child .draftpilot-value-label {
 	background: #e6f2ef;
 	color: #005c45;
 	border-bottom-color: #008060;
 }
 
-.copypilot-value-body {
+.draftpilot-value-body {
 	padding: 12px;
 	margin: 0;
 	font-size: 13px;
@@ -189,12 +189,12 @@
 	}
 }
 
-.copypilot-empty {
+.draftpilot-empty {
 	color: #949494;
 	font-style: italic;
 }
 
-.copypilot-empty-queue {
+.draftpilot-empty-queue {
 	padding: 32px;
 	text-align: center;
 	color: #50575e;
@@ -204,7 +204,7 @@
 	margin-top: 16px;
 }
 
-.copypilot-settings {
+.draftpilot-settings {
 	max-width: 480px;
 	display: flex;
 	flex-direction: column;

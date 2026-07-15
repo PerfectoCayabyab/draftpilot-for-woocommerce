@@ -13,57 +13,57 @@ const App = () => {
 	const [ pending, setPending ] = useState( 0 );
 
 	useEffect( () => {
-		apiFetch( { path: '/copypilot/v1/settings' } ).then( ( res ) => {
+		apiFetch( { path: '/draftpilot/v1/settings' } ).then( ( res ) => {
 			setConfig( res );
 		} );
-		apiFetch( { path: '/copypilot/v1/drafts?status=pending' } ).then( ( res ) => {
+		apiFetch( { path: '/draftpilot/v1/drafts?status=pending' } ).then( ( res ) => {
 			setPending( res.pending );
 		} );
 	}, [] );
 
 	if ( ! config ) {
 		return (
-			<div className="copypilot-loading">
+			<div className="draftpilot-loading">
 				<Spinner />
 			</div>
 		);
 	}
 
 	const tabs = [
-		{ name: 'products', title: __( 'Products', 'copypilot-for-woocommerce' ) },
+		{ name: 'products', title: __( 'Products', 'draftpilot-for-woocommerce' ) },
 		{
 			name: 'review',
 			title:
-				__( 'Review queue', 'copypilot-for-woocommerce' ) +
+				__( 'Review queue', 'draftpilot-for-woocommerce' ) +
 				( pending > 0 ? ` (${ pending })` : '' ),
 		},
-		{ name: 'settings', title: __( 'Settings', 'copypilot-for-woocommerce' ) },
+		{ name: 'settings', title: __( 'Settings', 'draftpilot-for-woocommerce' ) },
 	];
 
 	const urlTab = new URLSearchParams( window.location.search ).get(
-		'cp-tab'
+		'dp-tab'
 	);
 	const initialTab = tabs.some( ( t ) => t.name === urlTab )
 		? urlTab
 		: 'products';
 
 	return (
-		<div className="copypilot-app">
-			<div className="copypilot-header">
+		<div className="draftpilot-app">
+			<div className="draftpilot-header">
 				<h1>
-					Copy<span>Pilot</span>
+					Draft<span>Pilot</span>
 				</h1>
 				<p>
 					{ __(
 						'AI product copy with human approval — nothing publishes until you say so.',
-						'copypilot-for-woocommerce'
+						'draftpilot-for-woocommerce'
 					) }
 				</p>
 			</div>
 
 			<TabPanel
 				tabs={ tabs }
-				className="copypilot-tabs"
+				className="draftpilot-tabs"
 				initialTabName={ initialTab }
 			>
 				{ ( tab ) => {
@@ -87,7 +87,7 @@ const App = () => {
 	);
 };
 
-const rootEl = document.getElementById( 'copypilot-root' );
+const rootEl = document.getElementById( 'draftpilot-root' );
 if ( rootEl ) {
 	createRoot( rootEl ).render( <App /> );
 }

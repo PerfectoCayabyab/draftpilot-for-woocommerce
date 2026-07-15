@@ -2,30 +2,30 @@
 /**
  * Draft storage: a custom table holding AI-generated copy awaiting review.
  *
- * @package CopyPilot
+ * @package DraftPilot
  */
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * CRUD for the copypilot_drafts table.
+ * CRUD for the draftpilot_drafts table.
  */
-class CopyPilot_Drafts {
+class DraftPilot_Drafts {
 
 	const DB_VERSION        = '1.0';
-	const DB_VERSION_OPTION = 'copypilot_db_version';
+	const DB_VERSION_OPTION = 'draftpilot_db_version';
 
 	/**
-	 * Fields CopyPilot can generate, mapped to human labels.
+	 * Fields DraftPilot can generate, mapped to human labels.
 	 *
 	 * @return array<string,string>
 	 */
 	public static function fields() {
 		return array(
-			'long_description'  => __( 'Description', 'copypilot-for-woocommerce' ),
-			'short_description' => __( 'Short description', 'copypilot-for-woocommerce' ),
-			'seo_title'         => __( 'SEO title', 'copypilot-for-woocommerce' ),
-			'meta_description'  => __( 'Meta description', 'copypilot-for-woocommerce' ),
+			'long_description'  => __( 'Description', 'draftpilot-for-woocommerce' ),
+			'short_description' => __( 'Short description', 'draftpilot-for-woocommerce' ),
+			'seo_title'         => __( 'SEO title', 'draftpilot-for-woocommerce' ),
+			'meta_description'  => __( 'Meta description', 'draftpilot-for-woocommerce' ),
 		);
 	}
 
@@ -36,7 +36,7 @@ class CopyPilot_Drafts {
 	 */
 	public static function table() {
 		global $wpdb;
-		return $wpdb->prefix . 'copypilot_drafts';
+		return $wpdb->prefix . 'draftpilot_drafts';
 	}
 
 	/**
@@ -187,7 +187,7 @@ class CopyPilot_Drafts {
 	public static function apply( $draft ) {
 		$product = wc_get_product( (int) $draft->product_id );
 		if ( ! $product ) {
-			return new WP_Error( 'copypilot_no_product', __( 'Product no longer exists.', 'copypilot-for-woocommerce' ) );
+			return new WP_Error( 'draftpilot_no_product', __( 'Product no longer exists.', 'draftpilot-for-woocommerce' ) );
 		}
 
 		$value = $draft->proposed_value;
@@ -212,7 +212,7 @@ class CopyPilot_Drafts {
 				break;
 
 			default:
-				return new WP_Error( 'copypilot_bad_field', __( 'Unknown field.', 'copypilot-for-woocommerce' ) );
+				return new WP_Error( 'draftpilot_bad_field', __( 'Unknown field.', 'draftpilot-for-woocommerce' ) );
 		}
 
 		return true;
@@ -226,7 +226,7 @@ class CopyPilot_Drafts {
 	 * @param string $value      Sanitized value.
 	 */
 	private static function save_seo_meta( $product_id, $kind, $value ) {
-		update_post_meta( $product_id, '_copypilot_seo_' . $kind, $value );
+		update_post_meta( $product_id, '_draftpilot_seo_' . $kind, $value );
 
 		if ( defined( 'WPSEO_VERSION' ) ) {
 			$yoast_key = 'title' === $kind ? '_yoast_wpseo_title' : '_yoast_wpseo_metadesc';
@@ -253,9 +253,9 @@ class CopyPilot_Drafts {
 			case 'short_description':
 				return (string) $product->get_short_description();
 			case 'seo_title':
-				return (string) get_post_meta( $product->get_id(), '_copypilot_seo_title', true );
+				return (string) get_post_meta( $product->get_id(), '_draftpilot_seo_title', true );
 			case 'meta_description':
-				return (string) get_post_meta( $product->get_id(), '_copypilot_seo_description', true );
+				return (string) get_post_meta( $product->get_id(), '_draftpilot_seo_description', true );
 		}
 		return '';
 	}

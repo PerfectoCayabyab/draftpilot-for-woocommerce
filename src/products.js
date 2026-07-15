@@ -28,7 +28,7 @@ const ProductsTab = ( { config, onPendingChange } ) => {
 	const loadProducts = useCallback( () => {
 		setLoading( true );
 		apiFetch( {
-			path: `/copypilot/v1/products?search=${ encodeURIComponent(
+			path: `/draftpilot/v1/products?search=${ encodeURIComponent(
 				search
 			) }&page=${ page }`,
 		} ).then( ( res ) => {
@@ -67,13 +67,13 @@ const ProductsTab = ( { config, onPendingChange } ) => {
 			} );
 			try {
 				const res = await apiFetch( {
-					path: '/copypilot/v1/generate',
+					path: '/draftpilot/v1/generate',
 					method: 'POST',
 					data: { product_id: productId, fields, tone },
 				} );
 				onPendingChange( res.pending );
 			} catch ( err ) {
-				errors.push( err.message || __( 'Request failed.', 'copypilot-for-woocommerce' ) );
+				errors.push( err.message || __( 'Request failed.', 'draftpilot-for-woocommerce' ) );
 			}
 			done++;
 		}
@@ -90,7 +90,7 @@ const ProductsTab = ( { config, onPendingChange } ) => {
 					/* translators: %d: number of products. */
 					__(
 						'Drafts generated for %d product(s). Review them in the Review queue tab.',
-						'copypilot-for-woocommerce'
+						'draftpilot-for-woocommerce'
 					),
 					done
 				),
@@ -104,12 +104,12 @@ const ProductsTab = ( { config, onPendingChange } ) => {
 		allVisible.every( ( id ) => selected.includes( id ) );
 
 	return (
-		<div className="copypilot-products">
+		<div className="draftpilot-products">
 			{ ! config.settings.has_api_key && (
 				<Notice status="warning" isDismissible={ false }>
 					{ __(
 						'Add your Gemini API key in the Settings tab before generating copy.',
-						'copypilot-for-woocommerce'
+						'draftpilot-for-woocommerce'
 					) }
 				</Notice>
 			) }
@@ -123,19 +123,19 @@ const ProductsTab = ( { config, onPendingChange } ) => {
 				</Notice>
 			) }
 
-			<div className="copypilot-toolbar">
+			<div className="draftpilot-toolbar">
 				<SearchControl
 					value={ search }
 					onChange={ ( value ) => {
 						setSearch( value );
 						setPage( 1 );
 					} }
-					placeholder={ __( 'Search products…', 'copypilot-for-woocommerce' ) }
+					placeholder={ __( 'Search products…', 'draftpilot-for-woocommerce' ) }
 					__nextHasNoMarginBottom
 				/>
 
-				<div className="copypilot-generate-controls">
-					<div className="copypilot-fields">
+				<div className="draftpilot-generate-controls">
+					<div className="draftpilot-fields">
 						{ Object.entries( config.fields ).map(
 							( [ key, label ] ) => (
 								<CheckboxControl
@@ -152,7 +152,7 @@ const ProductsTab = ( { config, onPendingChange } ) => {
 					</div>
 
 					<SelectControl
-						label={ __( 'Tone', 'copypilot-for-woocommerce' ) }
+						label={ __( 'Tone', 'draftpilot-for-woocommerce' ) }
 						value={ tone }
 						options={ Object.entries( config.tones ).map(
 							( [ value, label ] ) => ( { value, label } )
@@ -176,14 +176,14 @@ const ProductsTab = ( { config, onPendingChange } ) => {
 						{ progress
 							? sprintf(
 									/* translators: 1: done count, 2: total, 3: product name. */
-									__( 'Generating %1$d/%2$d — %3$s', 'copypilot-for-woocommerce' ),
+									__( 'Generating %1$d/%2$d — %3$s', 'draftpilot-for-woocommerce' ),
 									progress.done + 1,
 									progress.total,
 									progress.name
 							  )
 							: sprintf(
 									/* translators: %d: selected count. */
-									__( 'Generate for %d selected', 'copypilot-for-woocommerce' ),
+									__( 'Generate for %d selected', 'draftpilot-for-woocommerce' ),
 									selected.length
 							  ) }
 					</Button>
@@ -191,11 +191,11 @@ const ProductsTab = ( { config, onPendingChange } ) => {
 			</div>
 
 			{ loading ? (
-				<div className="copypilot-loading">
+				<div className="draftpilot-loading">
 					<Spinner />
 				</div>
 			) : (
-				<table className="wp-list-table widefat fixed striped copypilot-table">
+				<table className="wp-list-table widefat fixed striped draftpilot-table">
 					<thead>
 						<tr>
 							<td className="check-column">
@@ -209,10 +209,10 @@ const ProductsTab = ( { config, onPendingChange } ) => {
 									__nextHasNoMarginBottom
 								/>
 							</td>
-							<th>{ __( 'Product', 'copypilot-for-woocommerce' ) }</th>
-							<th>{ __( 'Price', 'copypilot-for-woocommerce' ) }</th>
-							<th>{ __( 'Description', 'copypilot-for-woocommerce' ) }</th>
-							<th>{ __( 'Short description', 'copypilot-for-woocommerce' ) }</th>
+							<th>{ __( 'Product', 'draftpilot-for-woocommerce' ) }</th>
+							<th>{ __( 'Price', 'draftpilot-for-woocommerce' ) }</th>
+							<th>{ __( 'Description', 'draftpilot-for-woocommerce' ) }</th>
+							<th>{ __( 'Short description', 'draftpilot-for-woocommerce' ) }</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -233,7 +233,7 @@ const ProductsTab = ( { config, onPendingChange } ) => {
 									/>
 								</th>
 								<td>
-									<div className="copypilot-product-cell">
+									<div className="draftpilot-product-cell">
 										{ product.image && (
 											<img
 												src={ product.image }
@@ -265,7 +265,7 @@ const ProductsTab = ( { config, onPendingChange } ) => {
 						{ ! products.length && (
 							<tr>
 								<td colSpan="5">
-									{ __( 'No products found.', 'copypilot-for-woocommerce' ) }
+									{ __( 'No products found.', 'draftpilot-for-woocommerce' ) }
 								</td>
 							</tr>
 						) }
@@ -274,18 +274,18 @@ const ProductsTab = ( { config, onPendingChange } ) => {
 			) }
 
 			{ totalPages > 1 && (
-				<div className="copypilot-pagination">
+				<div className="draftpilot-pagination">
 					<Button
 						variant="secondary"
 						disabled={ page <= 1 }
 						onClick={ () => setPage( page - 1 ) }
 					>
-						{ __( '← Previous', 'copypilot-for-woocommerce' ) }
+						{ __( '← Previous', 'draftpilot-for-woocommerce' ) }
 					</Button>
 					<span>
 						{ sprintf(
 							/* translators: 1: current page, 2: total pages. */
-							__( 'Page %1$d of %2$d', 'copypilot-for-woocommerce' ),
+							__( 'Page %1$d of %2$d', 'draftpilot-for-woocommerce' ),
 							page,
 							totalPages
 						) }
@@ -295,7 +295,7 @@ const ProductsTab = ( { config, onPendingChange } ) => {
 						disabled={ page >= totalPages }
 						onClick={ () => setPage( page + 1 ) }
 					>
-						{ __( 'Next →', 'copypilot-for-woocommerce' ) }
+						{ __( 'Next →', 'draftpilot-for-woocommerce' ) }
 					</Button>
 				</div>
 			) }

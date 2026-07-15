@@ -1,6 +1,6 @@
 {
 	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
-	"landingPage": "/wp-admin/admin.php?page=copypilot",
+	"landingPage": "/wp-admin/admin.php?page=draftpilot",
 	"steps": [
 		{
 			"step": "installPlugin",
@@ -12,11 +12,11 @@
 		},
 		{
 			"step": "runPHP",
-			"code": "<?php require '/wordpress/wp-load.php'; require_once ABSPATH . 'wp-admin/includes/plugin.php'; $wc = 'woocommerce/woocommerce.php'; $cp = 'copypilot-for-woocommerce/copypilot-for-woocommerce.php'; foreach ( array( $wc, $cp ) as $p ) { $r = activate_plugin( $p ); if ( is_wp_error( $r ) ) { echo 'ACTIVATION FAILED ' . $p . ': ' . $r->get_error_message(); } } echo 'activated';"
+			"code": "<?php require '/wordpress/wp-load.php'; require_once ABSPATH . 'wp-admin/includes/plugin.php'; $wc = 'woocommerce/woocommerce.php'; $cp = 'draftpilot-for-woocommerce/draftpilot-for-woocommerce.php'; foreach ( array( $wc, $cp ) as $p ) { $r = activate_plugin( $p ); if ( is_wp_error( $r ) ) { echo 'ACTIVATION FAILED ' . $p . ': ' . $r->get_error_message(); } } echo 'activated';"
 		},
 		{
 			"step": "runPHP",
-			"code": "<?php require '/wordpress/wp-load.php'; require '/wordpress/wp-content/plugins/copypilot-for-woocommerce/dev/seed.php'; echo 'seeded';"
+			"code": "<?php require '/wordpress/wp-load.php'; require '/wordpress/wp-content/plugins/draftpilot-for-woocommerce/dev/seed.php'; echo 'seeded';"
 		}
 	]
 }

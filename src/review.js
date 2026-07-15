@@ -6,16 +6,16 @@ import apiFetch from '@wordpress/api-fetch';
 const FIELD_IS_HTML = [ 'long_description', 'short_description' ];
 
 const ValueBox = ( { label, value, field, empty } ) => (
-	<div className="copypilot-value">
-		<span className="copypilot-value-label">{ label }</span>
+	<div className="draftpilot-value">
+		<span className="draftpilot-value-label">{ label }</span>
 		{ value ? (
 			FIELD_IS_HTML.includes( field ) ? (
-				<RawHTML className="copypilot-value-body">{ value }</RawHTML>
+				<RawHTML className="draftpilot-value-body">{ value }</RawHTML>
 			) : (
-				<p className="copypilot-value-body">{ value }</p>
+				<p className="draftpilot-value-body">{ value }</p>
 			)
 		) : (
-			<p className="copypilot-value-body copypilot-empty">{ empty }</p>
+			<p className="draftpilot-value-body draftpilot-empty">{ empty }</p>
 		) }
 	</div>
 );
@@ -26,7 +26,7 @@ const ReviewTab = ( { onPendingChange } ) => {
 	const [ error, setError ] = useState( null );
 
 	const load = useCallback( () => {
-		apiFetch( { path: '/copypilot/v1/drafts?status=pending' } ).then(
+		apiFetch( { path: '/draftpilot/v1/drafts?status=pending' } ).then(
 			( res ) => {
 				setDrafts( res.drafts );
 				onPendingChange( res.pending );
@@ -43,7 +43,7 @@ const ReviewTab = ( { onPendingChange } ) => {
 		setError( null );
 		try {
 			const res = await apiFetch( {
-				path: `/copypilot/v1/drafts/${ draft.id }/${ decision }`,
+				path: `/draftpilot/v1/drafts/${ draft.id }/${ decision }`,
 				method: 'POST',
 			} );
 			setDrafts( ( prev ) =>
@@ -51,21 +51,21 @@ const ReviewTab = ( { onPendingChange } ) => {
 			);
 			onPendingChange( res.pending );
 		} catch ( err ) {
-			setError( err.message || __( 'Request failed.', 'copypilot-for-woocommerce' ) );
+			setError( err.message || __( 'Request failed.', 'draftpilot-for-woocommerce' ) );
 		}
 		setBusy( 0 );
 	};
 
 	if ( drafts === null ) {
 		return (
-			<div className="copypilot-loading">
+			<div className="draftpilot-loading">
 				<Spinner />
 			</div>
 		);
 	}
 
 	return (
-		<div className="copypilot-review">
+		<div className="draftpilot-review">
 			{ error && (
 				<Notice status="error" onRemove={ () => setError( null ) }>
 					{ error }
@@ -73,30 +73,30 @@ const ReviewTab = ( { onPendingChange } ) => {
 			) }
 
 			{ ! drafts.length && (
-				<p className="copypilot-empty-queue">
+				<p className="draftpilot-empty-queue">
 					{ __(
 						'No drafts waiting for review. Generate some copy from the Products tab.',
-						'copypilot-for-woocommerce'
+						'draftpilot-for-woocommerce'
 					) }
 				</p>
 			) }
 
 			{ drafts.map( ( draft ) => (
-				<Card key={ draft.id } className="copypilot-draft">
+				<Card key={ draft.id } className="draftpilot-draft">
 					<CardBody>
-						<div className="copypilot-draft-head">
+						<div className="draftpilot-draft-head">
 							<div>
 								<strong>{ draft.product_name }</strong>
-								<span className="copypilot-chip">
+								<span className="draftpilot-chip">
 									{ draft.field_label }
 								</span>
 								{ draft.tone && (
-									<span className="copypilot-chip copypilot-chip-tone">
+									<span className="draftpilot-chip draftpilot-chip-tone">
 										{ draft.tone }
 									</span>
 								) }
 							</div>
-							<div className="copypilot-draft-actions">
+							<div className="draftpilot-draft-actions">
 								<Button
 									variant="primary"
 									isBusy={ busy === draft.id }
@@ -105,7 +105,7 @@ const ReviewTab = ( { onPendingChange } ) => {
 										decide( draft, 'approve' )
 									}
 								>
-									{ __( 'Approve', 'copypilot-for-woocommerce' ) }
+									{ __( 'Approve', 'draftpilot-for-woocommerce' ) }
 								</Button>
 								<Button
 									isDestructive
@@ -114,23 +114,23 @@ const ReviewTab = ( { onPendingChange } ) => {
 										decide( draft, 'reject' )
 									}
 								>
-									{ __( 'Reject', 'copypilot-for-woocommerce' ) }
+									{ __( 'Reject', 'draftpilot-for-woocommerce' ) }
 								</Button>
 							</div>
 						</div>
 
-						<div className="copypilot-compare">
+						<div className="draftpilot-compare">
 							<ValueBox
-								label={ __( 'Current', 'copypilot-for-woocommerce' ) }
+								label={ __( 'Current', 'draftpilot-for-woocommerce' ) }
 								value={ draft.current_value }
 								field={ draft.field }
-								empty={ __( '(empty)', 'copypilot-for-woocommerce' ) }
+								empty={ __( '(empty)', 'draftpilot-for-woocommerce' ) }
 							/>
 							<ValueBox
-								label={ __( 'Proposed', 'copypilot-for-woocommerce' ) }
+								label={ __( 'Proposed', 'draftpilot-for-woocommerce' ) }
 								value={ draft.proposed_value }
 								field={ draft.field }
-								empty={ __( '(empty)', 'copypilot-for-woocommerce' ) }
+								empty={ __( '(empty)', 'draftpilot-for-woocommerce' ) }
 							/>
 						</div>
 					</CardBody>
