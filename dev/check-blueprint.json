@@ -1,0 +1,29 @@
+{
+	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
+	"steps": [
+		{
+			"step": "installPlugin",
+			"pluginData": {
+				"resource": "wordpress.org/plugins",
+				"slug": "woocommerce"
+			},
+			"options": { "activate": false }
+		},
+		{
+			"step": "installPlugin",
+			"pluginData": {
+				"resource": "wordpress.org/plugins",
+				"slug": "plugin-check"
+			},
+			"options": { "activate": false }
+		},
+		{
+			"step": "runPHP",
+			"code": "<?php require '/wordpress/wp-load.php'; require_once ABSPATH . 'wp-admin/includes/plugin.php'; foreach ( array( 'woocommerce/woocommerce.php', 'plugin-check/plugin.php', 'draftpilot-for-woocommerce/draftpilot-for-woocommerce.php' ) as $p ) { $r = activate_plugin( $p ); if ( is_wp_error( $r ) ) { echo 'FAILED ' . $p . ': ' . $r->get_error_message(); } }"
+		},
+		{
+			"step": "wp-cli",
+			"command": "wp plugin check draftpilot-for-woocommerce --exclude-directories=dev,node_modules,src"
+		}
+	]
+}
