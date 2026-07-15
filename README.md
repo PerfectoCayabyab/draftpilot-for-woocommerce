@@ -4,7 +4,7 @@ An AI product copywriter for WooCommerce with a **human-in-the-loop review queue
 
 Built as a full-stack portfolio project by [Perfecto II Cayabyab](https://perfectocayabyab.com/), alongside [ShopPilot](https://github.com/PerfectoCayabyab/shoppilot) (the same approval-gated AI pattern as a Shopify app) and [Storefront Copilot](https://github.com/PerfectoCayabyab/storefront-copilot).
 
-![Products tab](.github/screenshots/products.png)
+![Review queue](.github/screenshots/review-queue.png)
 
 ## What makes this interesting
 
@@ -13,6 +13,8 @@ Built as a full-stack portfolio project by [Perfecto II Cayabyab](https://perfec
 - **Real WordPress plugin architecture.** Custom REST namespace (`copypilot/v1`) with `manage_woocommerce` permission checks, a custom drafts table via `dbDelta`, a React admin app built on `@wordpress/components` + `@wordpress/scripts`, settings sanitization, i18n, and full uninstall cleanup.
 - **SEO plugin integration.** Approved SEO titles and meta descriptions are written to Yoast SEO or Rank Math fields automatically when either is active.
 - **wordpress.org-ready.** GPL-2.0+, `readme.txt` with the required external-services disclosure, no CDN assets, `npm run plugin-zip` produces the installable/submittable ZIP.
+
+![Products tab](.github/screenshots/products.png)
 
 ## What it generates
 

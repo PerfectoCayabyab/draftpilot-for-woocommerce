@@ -181,6 +181,12 @@
 	p:last-child {
 		margin-bottom: 0;
 	}
+
+	ul {
+		list-style: disc;
+		padding-left: 20px;
+		margin: 8px 0;
+	}
 }
 
 .copypilot-empty {
