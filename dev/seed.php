@@ -1,0 +1,101 @@
+<?php
+/**
+ * Dev-only seeder for WordPress Playground. Not shipped in the plugin zip.
+ *
+ * Reads a Gemini API key from dev/.gemini-key (gitignored), seeds demo
+ * products, and writes an application password to dev/.test-app-pass for
+ * REST testing.
+ *
+ * @package CopyPilot
+ */
+
+defined( 'ABSPATH' ) || exit;
+
+// 1. Settings (API key from gitignored file, if present).
+$copypilot_key_file = __DIR__ . '/.gemini-key';
+$copypilot_key      = file_exists( $copypilot_key_file ) ? trim( (string) file_get_contents( $copypilot_key_file ) ) : '';
+
+update_option(
+	'copypilot_settings',
+	array(
+		'api_key'      => $copypilot_key,
+		'model'        => 'gemini-3.5-flash',
+		'default_tone' => 'professional',
+		'brand_voice'  => 'Independent outdoor gear shop. Practical, no hype, durability first.',
+		'language'     => 'English',
+	),
+	false
+);
+
+if ( class_exists( 'CopyPilot_Drafts' ) ) {
+	CopyPilot_Drafts::maybe_upgrade();
+}
+
+// 2. Demo products (only once).
+$copypilot_existing = wc_get_products( array( 'limit' => 1 ) );
+if ( empty( $copypilot_existing ) ) {
+	$copypilot_products = array(
+		array( 'Trailblazer 45L Hiking Backpack', 129.99, 'TRB-45', 'Backpacks', array( 'Material' => 'Ripstop nylon', 'Capacity' => '45 L' ) ),
+		array( 'Summit Merino Trail Socks (2-Pack)', 24.5, 'SMS-2PK', 'Apparel', array( 'Material' => 'Merino wool blend', 'Sizes' => 'M, L, XL' ) ),
+		array( 'Riverstone Insulated Bottle 1L', 34.0, 'RIB-1L', 'Accessories', array( 'Material' => 'Stainless steel', 'Insulation' => '24h cold / 12h hot' ) ),
+		array( 'Basecamp Titanium Cook Set', 89.0, 'BTC-SET', 'Cooking', array( 'Material' => 'Titanium', 'Pieces' => 'Pot, pan, lid' ) ),
+		array( 'Northwind 3-Season Tent', 249.0, 'NWT-3S', 'Shelter', array( 'Capacity' => '2 person', 'Weight' => '1.9 kg' ) ),
+	);
+
+	foreach ( $copypilot_products as $copypilot_row ) {
+		list( $copypilot_name, $copypilot_price, $copypilot_sku, $copypilot_cat, $copypilot_attrs ) = $copypilot_row;
+
+		$copypilot_product = new WC_Product_Simple();
+		$copypilot_product->set_name( $copypilot_name );
+		$copypilot_product->set_regular_price( (string) $copypilot_price );
+		$copypilot_product->set_sku( $copypilot_sku );
+		$copypilot_product->set_status( 'publish' );
+
+		$copypilot_attributes = array();
+		foreach ( $copypilot_attrs as $copypilot_attr_name => $copypilot_attr_value ) {
+			$copypilot_attribute = new WC_Product_Attribute();
+			$copypilot_attribute->set_name( $copypilot_attr_name );
+			$copypilot_attribute->set_options( array_map( 'trim', explode( ',', $copypilot_attr_value ) ) );
+			$copypilot_attribute->set_visible( true );
+			$copypilot_attributes[] = $copypilot_attribute;
+		}
+		$copypilot_product->set_attributes( $copypilot_attributes );
+		$copypilot_id = $copypilot_product->save();
+
+		wp_set_object_terms( $copypilot_id, $copypilot_cat, 'product_cat' );
+	}
+}
+
+// 3. Dev-only mu-plugin: allow application passwords over plain HTTP.
+$copypilot_mu = WP_CONTENT_DIR . '/mu-plugins';
+if ( ! is_dir( $copypilot_mu ) ) {
+	mkdir( $copypilot_mu ); // phpcs:ignore
+}
+file_put_contents( // phpcs:ignore
+	$copypilot_mu . '/copypilot-dev-auth.php',
+	"<?php\n" .
+	"// Dev-only helpers for the throwaway Playground instance.\n" .
+	"add_filter( 'wp_is_application_passwords_available', '__return_true' );\n" .
+	"add_action( 'init', function () {\n" .
+	"\tif ( isset( \$_GET['copypilot_dev_login'] ) && ! is_user_logged_in() ) {\n" .
+	"\t\t\$u = get_user_by( 'login', 'admin' );\n" .
+	"\t\tif ( \$u ) {\n" .
+	"\t\t\twp_set_auth_cookie( \$u->ID );\n" .
+	"\t\t\twp_safe_redirect( remove_query_arg( 'copypilot_dev_login' ) );\n" .
+	"\t\t\texit;\n" .
+	"\t\t}\n" .
+	"\t}\n" .
+	"} );\n"
+);
+
+// 4. Application password for REST testing.
+$copypilot_admin = get_user_by( 'login', 'admin' );
+if ( $copypilot_admin && class_exists( 'WP_Application_Passwords' ) ) {
+	$copypilot_created = WP_Application_Passwords::create_new_application_password(
+		$copypilot_admin->ID,
+		array( 'name' => 'copypilot-dev-' . time() )
+	);
+	if ( ! is_wp_error( $copypilot_created ) ) {
+		file_put_contents( __DIR__ . '/.test-app-pass', $copypilot_created[0] ); // phpcs:ignore
+	}
+}

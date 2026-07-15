@@ -1,0 +1,215 @@
+.copypilot-app {
+	max-width: 1100px;
+	margin: 24px auto 48px;
+	padding: 0 12px;
+}
+
+.copypilot-header {
+	margin-bottom: 16px;
+
+	h1 {
+		font-size: 28px;
+		font-weight: 700;
+		margin: 0;
+
+		span {
+			color: #008060;
+		}
+	}
+
+	p {
+		margin: 4px 0 0;
+		color: #50575e;
+	}
+}
+
+.copypilot-loading {
+	display: flex;
+	justify-content: center;
+	padding: 48px;
+}
+
+.copypilot-toolbar {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 4px;
+	padding: 16px;
+	margin: 16px 0;
+}
+
+.copypilot-generate-controls {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-end;
+	gap: 20px;
+}
+
+.copypilot-fields {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px 16px;
+}
+
+.copypilot-table {
+	.check-column {
+		width: 36px;
+		padding: 8px 0 8px 8px;
+		vertical-align: middle;
+	}
+
+	td,
+	th {
+		vertical-align: middle;
+	}
+}
+
+.copypilot-product-cell {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+
+	img {
+		width: 36px;
+		height: 36px;
+		object-fit: cover;
+		border-radius: 4px;
+	}
+}
+
+.copypilot-pagination {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin-top: 16px;
+}
+
+.copypilot-review {
+	margin-top: 16px;
+}
+
+.copypilot-draft {
+	margin-bottom: 16px;
+}
+
+.copypilot-draft-head {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 12px;
+	flex-wrap: wrap;
+	margin-bottom: 12px;
+
+	strong {
+		font-size: 14px;
+	}
+}
+
+.copypilot-draft-actions {
+	display: flex;
+	gap: 8px;
+}
+
+.copypilot-chip {
+	display: inline-block;
+	margin-left: 8px;
+	padding: 2px 10px;
+	border-radius: 999px;
+	background: #f0f0f1;
+	font-size: 12px;
+	color: #3c434a;
+}
+
+.copypilot-chip-tone {
+	background: #e6f2ef;
+	color: #005c45;
+	text-transform: capitalize;
+}
+
+.copypilot-compare {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 16px;
+
+	@media ( max-width: 782px ) {
+		grid-template-columns: 1fr;
+	}
+}
+
+.copypilot-value {
+	border: 1px solid #dcdcde;
+	border-radius: 4px;
+	overflow: hidden;
+
+	&:last-child {
+		border-color: #008060;
+	}
+}
+
+.copypilot-value-label {
+	display: block;
+	padding: 6px 12px;
+	background: #f6f7f7;
+	font-size: 11px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	color: #50575e;
+	border-bottom: 1px solid #dcdcde;
+}
+
+.copypilot-value:last-child .copypilot-value-label {
+	background: #e6f2ef;
+	color: #005c45;
+	border-bottom-color: #008060;
+}
+
+.copypilot-value-body {
+	padding: 12px;
+	margin: 0;
+	font-size: 13px;
+	line-height: 1.6;
+	max-height: 260px;
+	overflow-y: auto;
+
+	p:first-child {
+		margin-top: 0;
+	}
+
+	p:last-child {
+		margin-bottom: 0;
+	}
+}
+
+.copypilot-empty {
+	color: #949494;
+	font-style: italic;
+}
+
+.copypilot-empty-queue {
+	padding: 32px;
+	text-align: center;
+	color: #50575e;
+	background: #fff;
+	border: 1px dashed #c3c4c7;
+	border-radius: 4px;
+	margin-top: 16px;
+}
+
+.copypilot-settings {
+	max-width: 480px;
+	display: flex;
+	flex-direction: column;
+	gap: 18px;
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 4px;
+	padding: 20px;
+	margin-top: 16px;
+
+	> .components-button {
+		align-self: flex-start;
+	}
+}

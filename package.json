@@ -1,0 +1,24 @@
+{
+  "name": "copypilot-for-woocommerce",
+  "version": "1.0.0",
+  "description": "AI product copywriter for WooCommerce with a human review queue.",
+  "author": "Perfecto II Cayabyab",
+  "license": "GPL-2.0-or-later",
+  "scripts": {
+    "build": "wp-scripts build",
+    "start": "wp-scripts start",
+    "plugin-zip": "wp-scripts plugin-zip",
+    "lint:js": "wp-scripts lint-js"
+  },
+  "files": [
+    "copypilot-for-woocommerce.php",
+    "uninstall.php",
+    "includes/**",
+    "build/**",
+    "readme.txt",
+    "LICENSE"
+  ],
+  "devDependencies": {
+    "@wordpress/scripts": "^30.0.0"
+  }
+}
