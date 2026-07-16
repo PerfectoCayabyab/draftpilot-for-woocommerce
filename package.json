@@ -1,5 +1,5 @@
 {
-  "name": "draftpilot-for-woocommerce",
+  "name": "copyquill-for-woocommerce",
   "version": "1.0.0",
   "description": "AI product copywriter for WooCommerce with a human review queue.",
   "author": "Perfecto II Cayabyab",
@@ -11,7 +11,7 @@
     "lint:js": "wp-scripts lint-js"
   },
   "files": [
-    "draftpilot-for-woocommerce.php",
+    "copyquill-for-woocommerce.php",
     "uninstall.php",
     "includes/**",
     "build/**",

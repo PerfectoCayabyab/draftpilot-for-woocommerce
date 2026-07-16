@@ -1,4 +1,4 @@
-# DraftPilot for WooCommerce
+# Copyquill for WooCommerce
 
 An AI product copywriter for WooCommerce with a **human-in-the-loop review queue**: Google Gemini drafts product descriptions, short descriptions, and SEO meta from your real product data — and nothing touches the live store until a human clicks **Approve**.
 
@@ -10,7 +10,7 @@ Built as a full-stack portfolio project by [Perfecto II Cayabyab](https://perfec
 
 - **Review before publish.** Every generated draft lands in a review queue with a side-by-side *current vs proposed* comparison. Approve applies it; reject discards it; a newer draft supersedes the old one. Deciding a draft twice is rejected with a 409.
 - **Grounded generation.** Prompts are built from the product's live data — name, price, categories, tags, attributes, SKU, existing copy — and Gemini is forced through a JSON response schema, so output is structured, not scraped from prose. The model is explicitly instructed never to invent specs.
-- **Real WordPress plugin architecture.** Custom REST namespace (`draftpilot/v1`) with `manage_woocommerce` permission checks, a custom drafts table via `dbDelta`, a React admin app built on `@wordpress/components` + `@wordpress/scripts`, settings sanitization, i18n, and full uninstall cleanup.
+- **Real WordPress plugin architecture.** Custom REST namespace (`copyquill/v1`) with `manage_woocommerce` permission checks, a custom drafts table via `dbDelta`, a React admin app built on `@wordpress/components` + `@wordpress/scripts`, settings sanitization, i18n, and full uninstall cleanup.
 - **SEO plugin integration.** Approved SEO titles and meta descriptions are written to Yoast SEO or Rank Math fields automatically when either is active.
 - **wordpress.org-ready.** GPL-2.0+, `readme.txt` with the required external-services disclosure, no CDN assets, `npm run plugin-zip` produces the installable/submittable ZIP.
 
@@ -57,10 +57,10 @@ npm run build
 
 # put your free Gemini API key (aistudio.google.com/apikey) in dev/.gemini-key, then:
 npx @wp-playground/cli server --blueprint=dev/blueprint.json \
-  "--mount=.:/wordpress/wp-content/plugins/draftpilot-for-woocommerce" --port=9400 --login
+  "--mount=.:/wordpress/wp-content/plugins/copyquill-for-woocommerce" --port=9400 --login
 ```
 
-The blueprint installs WooCommerce, activates the plugin, seeds five demo products, and opens **WooCommerce → DraftPilot**.
+The blueprint installs WooCommerce, activates the plugin, seeds five demo products, and opens **WooCommerce → Copyquill**.
 
 ```bash
 npm run plugin-zip   # builds the distributable ZIP for wp-admin upload / wordpress.org

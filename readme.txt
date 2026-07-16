@@ -1,4 +1,4 @@
-=== DraftPilot for WooCommerce ===
+=== Copyquill for WooCommerce ===
 Contributors: perfectocayabyab
 Tags: woocommerce, ai, product description, seo, copywriting
 Requires at least: 6.4
@@ -12,7 +12,7 @@ AI product copywriter for WooCommerce. Generate descriptions and SEO meta with G
 
 == Description ==
 
-DraftPilot writes product copy for your WooCommerce store using Google Gemini, with a human-in-the-loop review queue: every AI draft lands in a **Review queue** where you compare it side-by-side with the current copy and click **Approve** or **Reject**. Nothing touches your live store until you approve it.
+Copyquill writes product copy for your WooCommerce store using Google Gemini, with a human-in-the-loop review queue: every AI draft lands in a **Review queue** where you compare it side-by-side with the current copy and click **Approve** or **Reject**. Nothing touches your live store until you approve it.
 
 **What it generates**
 
@@ -43,7 +43,7 @@ You need your own (free) Gemini API key from [Google AI Studio](https://aistudio
 
 1. Install and activate WooCommerce.
 2. Upload the plugin ZIP via **Plugins → Add New → Upload Plugin**, then activate it.
-3. Go to **WooCommerce → DraftPilot → Settings** and paste your Gemini API key.
+3. Go to **WooCommerce → Copyquill → Settings** and paste your Gemini API key.
 4. Open the **Products** tab, select products, choose a tone, and click **Generate**.
 5. Review each draft in the **Review queue** and approve or reject it.
 
@@ -55,7 +55,7 @@ No. Every generated draft goes to the review queue. Copy is only applied to a pr
 
 = Which SEO plugins are supported? =
 
-Approved SEO titles and meta descriptions are written to Yoast SEO and Rank Math fields automatically when either plugin is active. They are also stored in DraftPilot's own meta keys.
+Approved SEO titles and meta descriptions are written to Yoast SEO and Rank Math fields automatically when either plugin is active. They are also stored in Copyquill's own meta keys.
 
 = Is the Gemini API free? =
 
@@ -63,7 +63,7 @@ Google offers a free tier for the Gemini API that is sufficient for typical cata
 
 = What happens to my data if I delete the plugin? =
 
-Deleting the plugin removes the drafts table, all plugin options, and DraftPilot's post meta. Approved copy already applied to products remains, since it is part of your products.
+Deleting the plugin removes the drafts table, all plugin options, and Copyquill's post meta. Approved copy already applied to products remains, since it is part of your products.
 
 == Screenshots ==
 

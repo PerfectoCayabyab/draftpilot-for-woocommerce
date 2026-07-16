@@ -6,16 +6,16 @@ import apiFetch from '@wordpress/api-fetch';
 const FIELD_IS_HTML = [ 'long_description', 'short_description' ];
 
 const ValueBox = ( { label, value, field, empty } ) => (
-	<div className="draftpilot-value">
-		<span className="draftpilot-value-label">{ label }</span>
+	<div className="copyquill-value">
+		<span className="copyquill-value-label">{ label }</span>
 		{ value ? (
 			FIELD_IS_HTML.includes( field ) ? (
-				<RawHTML className="draftpilot-value-body">{ value }</RawHTML>
+				<RawHTML className="copyquill-value-body">{ value }</RawHTML>
 			) : (
-				<p className="draftpilot-value-body">{ value }</p>
+				<p className="copyquill-value-body">{ value }</p>
 			)
 		) : (
-			<p className="draftpilot-value-body draftpilot-empty">{ empty }</p>
+			<p className="copyquill-value-body copyquill-empty">{ empty }</p>
 		) }
 	</div>
 );
@@ -26,7 +26,7 @@ const ReviewTab = ( { onPendingChange } ) => {
 	const [ error, setError ] = useState( null );
 
 	const load = useCallback( () => {
-		apiFetch( { path: '/draftpilot/v1/drafts?status=pending' } ).then(
+		apiFetch( { path: '/copyquill/v1/drafts?status=pending' } ).then(
 			( res ) => {
 				setDrafts( res.drafts );
 				onPendingChange( res.pending );
@@ -43,7 +43,7 @@ const ReviewTab = ( { onPendingChange } ) => {
 		setError( null );
 		try {
 			const res = await apiFetch( {
-				path: `/draftpilot/v1/drafts/${ draft.id }/${ decision }`,
+				path: `/copyquill/v1/drafts/${ draft.id }/${ decision }`,
 				method: 'POST',
 			} );
 			setDrafts( ( prev ) =>
@@ -51,21 +51,21 @@ const ReviewTab = ( { onPendingChange } ) => {
 			);
 			onPendingChange( res.pending );
 		} catch ( err ) {
-			setError( err.message || __( 'Request failed.', 'draftpilot-for-woocommerce' ) );
+			setError( err.message || __( 'Request failed.', 'copyquill-for-woocommerce' ) );
 		}
 		setBusy( 0 );
 	};
 
 	if ( drafts === null ) {
 		return (
-			<div className="draftpilot-loading">
+			<div className="copyquill-loading">
 				<Spinner />
 			</div>
 		);
 	}
 
 	return (
-		<div className="draftpilot-review">
+		<div className="copyquill-review">
 			{ error && (
 				<Notice status="error" onRemove={ () => setError( null ) }>
 					{ error }
@@ -73,30 +73,30 @@ const ReviewTab = ( { onPendingChange } ) => {
 			) }
 
 			{ ! drafts.length && (
-				<p className="draftpilot-empty-queue">
+				<p className="copyquill-empty-queue">
 					{ __(
 						'No drafts waiting for review. Generate some copy from the Products tab.',
-						'draftpilot-for-woocommerce'
+						'copyquill-for-woocommerce'
 					) }
 				</p>
 			) }
 
 			{ drafts.map( ( draft ) => (
-				<Card key={ draft.id } className="draftpilot-draft">
+				<Card key={ draft.id } className="copyquill-draft">
 					<CardBody>
-						<div className="draftpilot-draft-head">
+						<div className="copyquill-draft-head">
 							<div>
 								<strong>{ draft.product_name }</strong>
-								<span className="draftpilot-chip">
+								<span className="copyquill-chip">
 									{ draft.field_label }
 								</span>
 								{ draft.tone && (
-									<span className="draftpilot-chip draftpilot-chip-tone">
+									<span className="copyquill-chip copyquill-chip-tone">
 										{ draft.tone }
 									</span>
 								) }
 							</div>
-							<div className="draftpilot-draft-actions">
+							<div className="copyquill-draft-actions">
 								<Button
 									variant="primary"
 									isBusy={ busy === draft.id }
@@ -105,7 +105,7 @@ const ReviewTab = ( { onPendingChange } ) => {
 										decide( draft, 'approve' )
 									}
 								>
-									{ __( 'Approve', 'draftpilot-for-woocommerce' ) }
+									{ __( 'Approve', 'copyquill-for-woocommerce' ) }
 								</Button>
 								<Button
 									isDestructive
@@ -114,23 +114,23 @@ const ReviewTab = ( { onPendingChange } ) => {
 										decide( draft, 'reject' )
 									}
 								>
-									{ __( 'Reject', 'draftpilot-for-woocommerce' ) }
+									{ __( 'Reject', 'copyquill-for-woocommerce' ) }
 								</Button>
 							</div>
 						</div>
 
-						<div className="draftpilot-compare">
+						<div className="copyquill-compare">
 							<ValueBox
-								label={ __( 'Current', 'draftpilot-for-woocommerce' ) }
+								label={ __( 'Current', 'copyquill-for-woocommerce' ) }
 								value={ draft.current_value }
 								field={ draft.field }
-								empty={ __( '(empty)', 'draftpilot-for-woocommerce' ) }
+								empty={ __( '(empty)', 'copyquill-for-woocommerce' ) }
 							/>
 							<ValueBox
-								label={ __( 'Proposed', 'draftpilot-for-woocommerce' ) }
+								label={ __( 'Proposed', 'copyquill-for-woocommerce' ) }
 								value={ draft.proposed_value }
 								field={ draft.field }
-								empty={ __( '(empty)', 'draftpilot-for-woocommerce' ) }
+								empty={ __( '(empty)', 'copyquill-for-woocommerce' ) }
 							/>
 						</div>
 					</CardBody>

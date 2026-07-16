@@ -2,17 +2,17 @@
 /**
  * Plugin settings stored in a single option.
  *
- * @package DraftPilot
+ * @package Copyquill
  */
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Typed access to the draftpilot_settings option.
+ * Typed access to the copyquill_settings option.
  */
-class DraftPilot_Settings {
+class Copyquill_Settings {
 
-	const OPTION = 'draftpilot_settings';
+	const OPTION = 'copyquill_settings';
 
 	/**
 	 * Tone presets offered in the UI.
@@ -21,11 +21,11 @@ class DraftPilot_Settings {
 	 */
 	public static function tones() {
 		return array(
-			'professional' => __( 'Professional', 'draftpilot-for-woocommerce' ),
-			'friendly'     => __( 'Friendly & warm', 'draftpilot-for-woocommerce' ),
-			'premium'      => __( 'Premium & luxurious', 'draftpilot-for-woocommerce' ),
-			'playful'      => __( 'Playful', 'draftpilot-for-woocommerce' ),
-			'minimal'      => __( 'Minimal & direct', 'draftpilot-for-woocommerce' ),
+			'professional' => __( 'Professional', 'copyquill-for-woocommerce' ),
+			'friendly'     => __( 'Friendly & warm', 'copyquill-for-woocommerce' ),
+			'premium'      => __( 'Premium & luxurious', 'copyquill-for-woocommerce' ),
+			'playful'      => __( 'Playful', 'copyquill-for-woocommerce' ),
+			'minimal'      => __( 'Minimal & direct', 'copyquill-for-woocommerce' ),
 		);
 	}
 

@@ -2,7 +2,7 @@
 /**
  * Thin client for the Google Gemini generateContent API.
  *
- * @package DraftPilot
+ * @package Copyquill
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Calls Gemini with a JSON response schema and returns decoded JSON.
  */
-class DraftPilot_Gemini_Client {
+class Copyquill_Gemini_Client {
 
 	const ENDPOINT = 'https://generativelanguage.googleapis.com/v1beta/models/%s:generateContent';
 
@@ -22,15 +22,15 @@ class DraftPilot_Gemini_Client {
 	 * @return array|WP_Error Decoded JSON on success.
 	 */
 	public static function generate_json( $prompt, $response_schema ) {
-		$api_key = (string) DraftPilot_Settings::get( 'api_key' );
+		$api_key = (string) Copyquill_Settings::get( 'api_key' );
 		if ( '' === $api_key ) {
 			return new WP_Error(
-				'draftpilot_no_key',
-				__( 'No Gemini API key configured. Add one under DraftPilot → Settings.', 'draftpilot-for-woocommerce' )
+				'copyquill_no_key',
+				__( 'No Gemini API key configured. Add one under Copyquill → Settings.', 'copyquill-for-woocommerce' )
 			);
 		}
 
-		$model = (string) DraftPilot_Settings::get( 'model' );
+		$model = (string) Copyquill_Settings::get( 'model' );
 		$url   = sprintf( self::ENDPOINT, rawurlencode( $model ) );
 
 		$body = array(
@@ -67,11 +67,11 @@ class DraftPilot_Gemini_Client {
 		$data = json_decode( wp_remote_retrieve_body( $response ), true );
 
 		if ( 200 !== $code ) {
-			$message = isset( $data['error']['message'] ) ? $data['error']['message'] : __( 'Unknown API error.', 'draftpilot-for-woocommerce' );
+			$message = isset( $data['error']['message'] ) ? $data['error']['message'] : __( 'Unknown API error.', 'copyquill-for-woocommerce' );
 			return new WP_Error(
-				'draftpilot_api_error',
+				'copyquill_api_error',
 				/* translators: 1: HTTP status code, 2: API error message. */
-				sprintf( __( 'Gemini API error (HTTP %1$d): %2$s', 'draftpilot-for-woocommerce' ), $code, $message )
+				sprintf( __( 'Gemini API error (HTTP %1$d): %2$s', 'copyquill-for-woocommerce' ), $code, $message )
 			);
 		}
 
@@ -79,7 +79,7 @@ class DraftPilot_Gemini_Client {
 		$json = json_decode( $text, true );
 
 		if ( ! is_array( $json ) ) {
-			return new WP_Error( 'draftpilot_bad_json', __( 'The model returned malformed JSON. Please try again.', 'draftpilot-for-woocommerce' ) );
+			return new WP_Error( 'copyquill_bad_json', __( 'The model returned malformed JSON. Please try again.', 'copyquill-for-woocommerce' ) );
 		}
 
 		return $json;

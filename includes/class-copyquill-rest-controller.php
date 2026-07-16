@@ -1,18 +1,18 @@
 <?php
 /**
- * REST API for the DraftPilot admin app.
+ * REST API for the Copyquill admin app.
  *
- * @package DraftPilot
+ * @package Copyquill
  */
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Routes under draftpilot/v1. All routes require manage_woocommerce.
+ * Routes under copyquill/v1. All routes require manage_woocommerce.
  */
-class DraftPilot_REST_Controller {
+class Copyquill_REST_Controller {
 
-	const NAMESPACE = 'draftpilot/v1';
+	const NAMESPACE = 'copyquill/v1';
 
 	/**
 	 * Register all routes.
@@ -111,7 +111,7 @@ class DraftPilot_REST_Controller {
 	}
 
 	/**
-	 * Only shop managers / admins may use DraftPilot.
+	 * Only shop managers / admins may use Copyquill.
 	 *
 	 * @return bool
 	 */
@@ -173,11 +173,11 @@ class DraftPilot_REST_Controller {
 	public function generate( $request ) {
 		$tone = (string) $request['tone'];
 		if ( '' === $tone ) {
-			$tone = (string) DraftPilot_Settings::get( 'default_tone' );
+			$tone = (string) Copyquill_Settings::get( 'default_tone' );
 		}
 
 		$fields = array_map( 'sanitize_key', (array) $request['fields'] );
-		$drafts = DraftPilot_Generator::generate( (int) $request['product_id'], $fields, $tone );
+		$drafts = Copyquill_Generator::generate( (int) $request['product_id'], $fields, $tone );
 
 		if ( is_wp_error( $drafts ) ) {
 			$drafts->add_data( array( 'status' => 400 ) );
@@ -187,7 +187,7 @@ class DraftPilot_REST_Controller {
 		return rest_ensure_response(
 			array(
 				'drafts'  => array_map( array( $this, 'format_draft' ), $drafts ),
-				'pending' => DraftPilot_Drafts::count_pending(),
+				'pending' => Copyquill_Drafts::count_pending(),
 			)
 		);
 	}
@@ -204,12 +204,12 @@ class DraftPilot_REST_Controller {
 			$status = 'pending';
 		}
 
-		$drafts = DraftPilot_Drafts::list_by_status( $status );
+		$drafts = Copyquill_Drafts::list_by_status( $status );
 
 		return rest_ensure_response(
 			array(
 				'drafts'  => array_map( array( $this, 'format_draft' ), $drafts ),
-				'pending' => DraftPilot_Drafts::count_pending(),
+				'pending' => Copyquill_Drafts::count_pending(),
 			)
 		);
 	}
@@ -221,29 +221,29 @@ class DraftPilot_REST_Controller {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function decide_draft( $request ) {
-		$draft = DraftPilot_Drafts::get( (int) $request['id'] );
+		$draft = Copyquill_Drafts::get( (int) $request['id'] );
 		if ( ! $draft ) {
-			return new WP_Error( 'draftpilot_not_found', __( 'Draft not found.', 'draftpilot-for-woocommerce' ), array( 'status' => 404 ) );
+			return new WP_Error( 'copyquill_not_found', __( 'Draft not found.', 'copyquill-for-woocommerce' ), array( 'status' => 404 ) );
 		}
 		if ( 'pending' !== $draft->status ) {
-			return new WP_Error( 'draftpilot_decided', __( 'This draft has already been decided.', 'draftpilot-for-woocommerce' ), array( 'status' => 409 ) );
+			return new WP_Error( 'copyquill_decided', __( 'This draft has already been decided.', 'copyquill-for-woocommerce' ), array( 'status' => 409 ) );
 		}
 
 		if ( 'approve' === $request['decision'] ) {
-			$applied = DraftPilot_Drafts::apply( $draft );
+			$applied = Copyquill_Drafts::apply( $draft );
 			if ( is_wp_error( $applied ) ) {
 				$applied->add_data( array( 'status' => 400 ) );
 				return $applied;
 			}
-			DraftPilot_Drafts::set_status( (int) $draft->id, 'approved' );
+			Copyquill_Drafts::set_status( (int) $draft->id, 'approved' );
 		} else {
-			DraftPilot_Drafts::set_status( (int) $draft->id, 'rejected' );
+			Copyquill_Drafts::set_status( (int) $draft->id, 'rejected' );
 		}
 
 		return rest_ensure_response(
 			array(
 				'ok'      => true,
-				'pending' => DraftPilot_Drafts::count_pending(),
+				'pending' => Copyquill_Drafts::count_pending(),
 			)
 		);
 	}
@@ -256,9 +256,9 @@ class DraftPilot_REST_Controller {
 	public function get_settings() {
 		return rest_ensure_response(
 			array(
-				'settings' => DraftPilot_Settings::for_ui(),
-				'tones'    => DraftPilot_Settings::tones(),
-				'fields'   => DraftPilot_Drafts::fields(),
+				'settings' => Copyquill_Settings::for_ui(),
+				'tones'    => Copyquill_Settings::tones(),
+				'fields'   => Copyquill_Drafts::fields(),
 			)
 		);
 	}
@@ -270,8 +270,8 @@ class DraftPilot_REST_Controller {
 	 * @return WP_REST_Response
 	 */
 	public function update_settings( $request ) {
-		DraftPilot_Settings::update( (array) $request->get_json_params() );
-		return rest_ensure_response( array( 'settings' => DraftPilot_Settings::for_ui() ) );
+		Copyquill_Settings::update( (array) $request->get_json_params() );
+		return rest_ensure_response( array( 'settings' => Copyquill_Settings::for_ui() ) );
 	}
 
 	/**
@@ -282,12 +282,12 @@ class DraftPilot_REST_Controller {
 	 */
 	private function format_draft( $draft ) {
 		$product = wc_get_product( (int) $draft->product_id );
-		$fields  = DraftPilot_Drafts::fields();
+		$fields  = Copyquill_Drafts::fields();
 
 		return array(
 			'id'             => (int) $draft->id,
 			'product_id'     => (int) $draft->product_id,
-			'product_name'   => $product ? $product->get_name() : __( '(deleted product)', 'draftpilot-for-woocommerce' ),
+			'product_name'   => $product ? $product->get_name() : __( '(deleted product)', 'copyquill-for-woocommerce' ),
 			'field'          => $draft->field,
 			'field_label'    => isset( $fields[ $draft->field ] ) ? $fields[ $draft->field ] : $draft->field,
 			'current_value'  => (string) $draft->current_value,

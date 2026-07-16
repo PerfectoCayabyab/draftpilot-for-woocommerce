@@ -23,7 +23,7 @@ const SettingsTab = ( { config, onSaved } ) => {
 	const save = async () => {
 		setSaving( true );
 		const res = await apiFetch( {
-			path: '/draftpilot/v1/settings',
+			path: '/copyquill/v1/settings',
 			method: 'POST',
 			data: values,
 		} );
@@ -34,21 +34,21 @@ const SettingsTab = ( { config, onSaved } ) => {
 	};
 
 	return (
-		<div className="draftpilot-settings">
+		<div className="copyquill-settings">
 			{ saved && (
 				<Notice status="success" onRemove={ () => setSaved( false ) }>
-					{ __( 'Settings saved.', 'draftpilot-for-woocommerce' ) }
+					{ __( 'Settings saved.', 'copyquill-for-woocommerce' ) }
 				</Notice>
 			) }
 
 			<TextControl
-				label={ __( 'Gemini API key', 'draftpilot-for-woocommerce' ) }
+				label={ __( 'Gemini API key', 'copyquill-for-woocommerce' ) }
 				type="password"
 				value={ values.api_key }
 				onChange={ set( 'api_key' ) }
 				help={
 					<>
-						{ __( 'Get a free key at ', 'draftpilot-for-woocommerce' ) }
+						{ __( 'Get a free key at ', 'copyquill-for-woocommerce' ) }
 						<ExternalLink href="https://aistudio.google.com/apikey">
 							Google AI Studio
 						</ExternalLink>
@@ -59,16 +59,16 @@ const SettingsTab = ( { config, onSaved } ) => {
 			/>
 
 			<TextControl
-				label={ __( 'Model', 'draftpilot-for-woocommerce' ) }
+				label={ __( 'Model', 'copyquill-for-woocommerce' ) }
 				value={ values.model }
 				onChange={ set( 'model' ) }
-				help={ __( 'Gemini model ID, e.g. gemini-3.5-flash.', 'draftpilot-for-woocommerce' ) }
+				help={ __( 'Gemini model ID, e.g. gemini-3.5-flash.', 'copyquill-for-woocommerce' ) }
 				__nextHasNoMarginBottom
 				__next40pxDefaultSize
 			/>
 
 			<SelectControl
-				label={ __( 'Default tone', 'draftpilot-for-woocommerce' ) }
+				label={ __( 'Default tone', 'copyquill-for-woocommerce' ) }
 				value={ values.default_tone }
 				options={ Object.entries( config.tones ).map(
 					( [ value, label ] ) => ( { value, label } )
@@ -79,19 +79,19 @@ const SettingsTab = ( { config, onSaved } ) => {
 			/>
 
 			<TextareaControl
-				label={ __( 'Brand voice notes', 'draftpilot-for-woocommerce' ) }
+				label={ __( 'Brand voice notes', 'copyquill-for-woocommerce' ) }
 				value={ values.brand_voice }
 				onChange={ set( 'brand_voice' ) }
 				help={ __(
 					'Optional. E.g. "We are a family-run outdoor gear shop; avoid hype, mention durability."',
-					'draftpilot-for-woocommerce'
+					'copyquill-for-woocommerce'
 				) }
 				rows={ 4 }
 				__nextHasNoMarginBottom
 			/>
 
 			<TextControl
-				label={ __( 'Output language', 'draftpilot-for-woocommerce' ) }
+				label={ __( 'Output language', 'copyquill-for-woocommerce' ) }
 				value={ values.language }
 				onChange={ set( 'language' ) }
 				__nextHasNoMarginBottom
@@ -104,7 +104,7 @@ const SettingsTab = ( { config, onSaved } ) => {
 				disabled={ saving }
 				onClick={ save }
 			>
-				{ __( 'Save settings', 'draftpilot-for-woocommerce' ) }
+				{ __( 'Save settings', 'copyquill-for-woocommerce' ) }
 			</Button>
 		</div>
 	);
